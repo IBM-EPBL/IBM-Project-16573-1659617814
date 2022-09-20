@@ -1,0 +1,52 @@
+
+#include <Servo.h>
+
+int Photosensor = 0;
+
+int DetectorState = 0;
+
+int Thermostat = 0;
+
+Servo servo_2;
+
+long readUltrasonicDistance(int triggerPin, int echoPin)
+{
+  pinMode(triggerPin, OUTPUT);  
+  digitalWrite(triggerPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(triggerPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(triggerPin, LOW);
+  pinMode(echoPin, INPUT);
+  return pulseIn(echoPin, HIGH);
+}
+
+void setup()
+{
+  pinMode(A4, INPUT);
+  servo_2.attach(2, 500, 2500);
+  pinMode(A0, INPUT);
+  Serial.begin(9600);
+  pinMode(11, OUTPUT);
+  pinMode(7, OUTPUT);
+}
+
+void loop()
+{
+  Thermostat = (-40 + 0.488155 * (analogRead(A4) - 20));
+  if (Thermostat < 18) {
+    servo_2.write(45);
+  } else {
+    servo_2.write(0);
+  }
+  Photosensor = analogRead(A0);
+  Serial.println(Photosensor);
+  analogWrite(11, map(Photosensor, 0, 1023, 0, 255));
+  DetectorState = 0.01723 * readUltrasonicDistance(8, 8);
+  if (DetectorState < 260) {
+    digitalWrite(7, HIGH);
+  } else {
+    digitalWrite(7, LOW);
+  }
+  delay(1000);
+}
