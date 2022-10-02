@@ -1,0 +1,8 @@
+import random
+temprature=random.sample(range(30,50),1)
+print("Temprature is",temprature)
+if(temprature>=[45]):
+    print("High Temprature")
+    print("Alarm is on")
+else:
+    print("Temprature is Normal")
