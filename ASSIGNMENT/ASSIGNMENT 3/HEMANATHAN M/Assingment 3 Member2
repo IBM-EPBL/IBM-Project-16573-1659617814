@@ -10,7 +10,7 @@ while True:
 from gpiozero import Button, TrafficLights, Buzzer
 buzzer = Buzzer(15) 
 button = Button(21) 
-lights = TrafficLights(25, 8, 7) 
+lights = TrafficLights(23, 7, 6) 
 while True:
     button.wait_for_press() 
     buzzer.on() 
